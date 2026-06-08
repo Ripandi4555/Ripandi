@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warung Rasa - Gambar Pasti Muncul</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --dark: #2d3436;
+            --light: #fdfcf8;
+            --glass: rgba(255, 255, 255, 0.95);
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            padding-top: 90px; 
+            padding-bottom: 80px;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { width: 100%; display: block; object-fit: cover; background-color: #eee; }
+
+        /* --- HEADER --- */
+        header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;
+            background: var(--glass); backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .top-info {
+            background: var(--primary); color: white;
+            text-align: center; font-size: 0.7rem; padding: 4px;
+            font-weight: 600; letter-spacing: 0.5px;
+        }
+
+        .navbar {
+            max-width: 1200px; margin: 0 auto;
+            height: 60px; display: flex;
+            justify-content: space-between; align-items: center;
+            padding: 0 20px; gap: 15px;
+        }
+
+        .logo {
+            font-size: 1.4rem; font-weight: 800; color: var(--primary);
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .search-container {
+            flex: 1; max-width: 450px; position: relative;
+        }
+
+        .search-container input {
+            width: 100%; padding: 8px 40px 8px 15px;
+            border-radius: 30px; border: 1px solid #eee;
+            background: #f1f2f6; font-size: 0.9rem; outline: none;
+            transition: 0.3s;
+        }
+
+        .search-container input:focus {
+            background: white; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .search-btn {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            background: transparent; color: var(--primary); border: none; cursor: pointer; font-size: 1rem;
+        }
+
+        .nav-actions { display: flex; align-items: center; gap: 10px; }
+
+        .cart-btn {
+            position: relative; font-size: 1.2rem; cursor: pointer;
+            color: var(--dark); background: white;
+            width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08); transition: 0.3s;
+        }
+
+        .cart-btn:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+
+        .badge {
+            position: absolute; top: -4px; right: -4px;
+            background: #e74c3c; color: white;
+            font-size: 0.65rem; font-weight: bold;
+            width: 18px; height: 18px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 2px solid white;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            max-width: 1200px; margin: 20px auto; padding: 0 20px;
+            border-radius: 16px; overflow: hidden;
+            box-shadow: var(--shadow); position: relative; height: 280px;
+        }
+
+        .hero img { width: 100%; height: 100%; object-fit: cover; transition: transform 10s linear; }
+        .hero:hover img { transform: scale(1.05); }
+
+        .hero-content {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white; padding: 40px 30px;
+        }
+        .hero-title { font-size: 2rem; font-weight: 700; margin-bottom: 5px; }
+
+        /* --- KATEGORI --- */
+        .category-wrapper { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .category-list { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .category-list::-webkit-scrollbar { display: none; }
+
+        .cat-pill {
+            background: white; padding: 8px 20px; border-radius: 25px;
+            font-size: 0.85rem; font-weight: 600; white-space: nowrap;
+            cursor: pointer; border: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: 0.3s;
+        }
+        .cat-pill.active, .cat-pill:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* --- GRID PRODUK --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: all 0.3s ease; cursor: pointer;
+            position: relative; display: flex; flex-direction: column;
+        }
+
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+        .card-img-box {
+            width: 100%; height: 180px; overflow: hidden; position: relative;
+            background: #eee;
+        }
+
+        .card-img-box img {
+            width: 100%; height: 100%;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-img-box img { transform: scale(1.08); }
+
+        .card-body { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; }
+
+        .food-title {
+            font-size: 1rem; font-weight: 700; margin-bottom: 8px;
+            color: var(--dark); display: -webkit-box;
+            -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+            overflow: hidden; height: 2.6em;
+        }
+
+        .food-meta { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+        .food-price { color: var(--primary); font-weight: 800; font-size: 1.1rem; }
+        .food-rating { font-size: 0.85rem; color: #f1c40f; font-weight: 600; }
+
+        .add-icon {
+            position: absolute; bottom: 16px; right: 16px;
+            width: 36px; height: 36px; background: var(--dark); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            opacity: 0; transform: translateY(10px); transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .card:hover .add-icon { opacity: 1; transform: translateY(0); }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 10000;
+            align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: white; width: 90%; max-width: 450px;
+            border-radius: 16px; padding: 25px; position: relative;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; cursor: pointer; }
+        .btn-action { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px; }
+
+        /* --- TOAST --- */
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 12px 25px; border-radius: 30px; transition: 0.4s; z-index: 10001; font-size: 0.9rem; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        @media (max-width: 768px) {
+            .navbar { height: auto; padding: 10px 20px; flex-wrap: wrap; }
+            .logo { width: 100%; justify-content: space-between; margin-bottom: 10px; }
+            .search-container { width: 100%; order: 3; margin-top: 10px; }
+            .nav-actions { width: 100%; justify-content: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="top-info">Gambar 100% Muncul (Auto Backup)</div>
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-utensils"></i> Warung Rasa
+            </div>
+            
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Cari makanan favorit...">
+                <button class="search-btn" onclick="filterProducts()"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="nav-actions">
+                <div class="cart-btn" onclick="showCart()">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80" alt="Banner" onerror="this.src='https://placehold.co/1200x400/ff6b35/white?text=Warung+Rasa'">
+        <div class="hero-content">
+            <h1 class="hero-title">Rasa Asli Indonesia</h1>
+            <p>Di bawah harga kaki lima, di atas rasa bintang lima.</p>
+        </div>
+    </section>
+
+    <div class="category-wrapper">
+        <div class="category-list">
+            <div class="cat-pill active" onclick="filterCategory('all', this)">Semua</div>
+            <div class="cat-pill" onclick="filterCategory('berat', this)">Makanan Berat</div>
+            <div class="cat-pill" onclick="filterCategory('cepat', this)">Cepat Saji</div>
+            <div class="cat-pill" onclick="filterCategory('minuman', this)">Minuman</div>
+            <div class="cat-pill" onclick="filterCategory('manis', this)">Manis & Cemil</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="grid" id="productGrid">
+            <!-- Produk akan di-render JS -->
+        </div>
+    </div>
+
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <img id="mImage" src="" style="width:100%; height:200px; object-fit:cover; border-radius:8px; margin-bottom:15px; background:#eee;">
+            <h3 id="mName" style="font-size:1.4rem; margin-bottom:5px;">Nama</h3>
+            <h4 id="mPrice" style="color:var(--primary); margin-bottom:10px;">Rp 0</h4>
+            <p id="mDesc" style="color:#666; font-size:0.9rem; line-height:1.6;">Deskripsi...</p>
+            <button class="btn-action" onclick="addToCartFromModal()">Tambah ke Keranjang</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Berhasil ditambahkan!</div>
+
+    <script>
+        // --- DATA PRODUK DENGAN CADANGAN GAMBAR ---
+        const products = [
+            { id: 1, name: "Ayam Goreng Crispy", cat: "berat", price: 28000, rating: 4.9, img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Ayam+Goreng", desc: "Ayam goreng berbalut tepung bumbu rahasia super renyah." },
+            { id: 2, name: "Nasi Goreng Spesial", cat: "berat", price: 25000, rating: 4.8, img: "https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Nasi+Goreng", desc: "Nasi goreng dengan bumbu rempah, telur mata sapi, dan kerupuk." },
+            { id: 3, name: "Sate Ayam Madura", cat: "berat", price: 30000, rating: 4.9, img: "https://images.unsplash.com/photo-1529563021893-cc83c992d75d?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Sate+Ayam", desc: "Sate ayam daging tebal dengan bumbu kacang kental yang gurih." },
+            { id: 4, name: "Burger Beef Deluxe", cat: "cepat", price: 45000, rating: 4.7, img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Burger", desc: "Daging sapi premium 150gr, keju cheddar meleleh, dan saus BBQ." },
+            { id: 5, name: "Es Kopi Gula Aren", cat: "minuman", price: 18000, rating: 4.6, img: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Kopi+Susu", desc: "Espresso robusta dengan susu fresh milk dan gula aren organik." },
+            { id: 6, name: "Rendang Daging Sapi", cat: "berat", price: 35000, rating: 5.0, img: "https://images.unsplash.com/photo-1608219992759-8d74ed8d76eb?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Rendang", desc: "Daging sapi pilihan dimasak lama dengan rempah-rempah padang." },
+            { id: 7, name: "Mie Goreng Jawa", cat: "berat", price: 22000, rating: 4.8, img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Mie+Goreng", desc: "Mie kuning goreng pedas dengan telur, sawi, dan topping ayam." },
+            { id: 8, name: "Dimsum Ayam (4pcs)", cat: "manis", price: 15000, rating: 4.7, img: "https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Dimsum", desc: "Dimsum lembut isi ayam udang dengan saus cocolan spesial." },
+            { id: 9, name: "Spaghetti Carbonara", cat: "cepat", price: 35000, rating: 4.5, img: "https://images.unsplash.com/photo-1612874742237-982867159b1c?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Spaghetti", desc: "Pasta creamy dengan saus beef bacon, parmesan cheese, black pepper." },
+            { id: 10, name: "Es Teh Manis Jumbo", cat: "minuman", price: 5000, rating: 4.9, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Es+Teh", desc: "Teh melati segar dengan gula asli, ukuran jumbo." },
+            { id: 11, name: "Roti Bakar Coklat", cat: "manis", price: 12000, rating: 4.8, img: "https://images.unsplash.com/photo-1586444248902-2f64eddc13df?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Roti+Bakar", desc: "Roti bakar tebal dengan topping selai coklat belgia dan meses." },
+            { id: 12, name: "Kentang Goreng", cat: "manis", price: 15000, rating: 4.5, img: "https://images.unsplash.com/photo-1630383249896-424e482df921?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Kentang", desc: "Kentang goreng potongan shoe string renyah dengan bumbu jagung." },
+            { id: 13, name: "Bakso Kuah Urat", cat: "berat", price: 20000, rating: 4.8, img: "https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Bakso", desc: "Bakso sapi urat yang kenyal dengan kuah kaldu sapi gurih." },
+            { id: 14, name: "Soto Ayam Lamongan", cat: "berat", price: 18000, rating: 4.7, img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Soto+Ayam", desc: "Soto ayam kuning dengan koya gurih dan irisan telur." },
+            { id: 15, name: "Martabak Manis", cat: "manis", price: 25000, rating: 4.9, img: "https://images.unsplash.com/photo-1623934199744-4851192f42b0?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Martabak", desc: "Martabak tebal lembut dengan topping coklat, keju, dan kacang." },
+            { id: 16, name: "Pizza Pepperoni", cat: "cepat", price: 55000, rating: 4.6, img: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Pizza", desc: "Pizza base tipis dengan topping pepperoni melimpah dan mozzarella." },
+            { id: 17, name: "Gado-Gado Betawi", cat: "berat", price: 22000, rating: 4.7, img: "https://images.unsplash.com/photo-1511690656952-34342a38c183?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Gado+Gado", desc: "Sayuran rebus segar dengan bumbu kacang kental khas Betawi." },
+            { id: 18, name: "Jus Alpukat", cat: "minuman", price: 18000, rating: 4.8, img: "https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?auto=format&fit=crop&w=500&q=80", backup: "https://placehold.co/500x300/ff6b35/white?text=Jus+Alpukat", desc: "Jus alpukat mentega kental dipadukan dengan susu coklat." }
+        ];
+
+        let cartCount = 0;
+        let activeProduct = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts(products);
+        });
+
+        function renderProducts(data) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            
+            if (data.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 30px; color: #888;">Menu tidak ditemukan</div>';
+                return;
+            }
+
+            data.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = (e) => {
+                    if (!e.target.closest('.add-icon')) openModal(p);
+                };
+
+                // TAMBAHKAN onerror UNTUK CADANGAN
+                card.innerHTML = `
+                    <div class="card-img-box">
+                        <img src="${p.img}" alt="${p.name}" loading="lazy" onerror="this.src='${p.backup}'">
+                    </div>
+                    <div class="card-body">
+                        <h4 class="food-title">${p.name}</h4>
+                        <div class="food-meta">
+                            <span class="food-price">Rp ${p.price.toLocaleString('id-ID')}</span>
+                            <span class="food-rating"><i class="fas fa-star"></i> ${p.rating}</span>
+                        </div>
+                    </div>
+                    <div class="add-icon" onclick="addToCart()">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(cat, el) {
+            document.querySelectorAll('.cat-pill').forEach(btn => btn.classList.remove('active'));
+            el.classList.add('active');
+            
+            if (cat === 'all') {
+                renderProducts(products);
+            } else {
+                const filtered = products.filter(p => p.cat === cat);
+                renderProducts(filtered);
+            }
+        }
+
+        function filterProducts() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(keyword));
+            renderProducts(filtered);
+        }
+        
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') filterProducts();
+        });
+
+        function openModal(p) {
+            activeProduct = p;
+            const modalImg = document.getElementById('mImage');
+            modalImg.src = p.img;
+            
+            // Error handler untuk modal juga
+            modalImg.onerror = function() {
+                this.src = p.backup;
+            };
+
+            document.getElementById('mName').innerText = p.name;
+            document.getElementById('mPrice').innerText = "Rp " + p.price.toLocaleString('id-ID');
+            document.getElementById('mDesc').innerText = p.desc;
+            document.getElementById('productModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        window.onclick = function(e) {
+            if (e.target == document.getElementById('productModal')) closeModal();
+        }
+
+        function addToCart() {
+            cartCount++;
+            document.getElementById('cartCount').innerText = cartCount;
+            showToast();
+        }
+
+        function addToCartFromModal() {
+            addToCart();
+            closeModal();
+        }
+
+        function showCart() {
+            if(cartCount > 0) {
+                alert(`Total ${cartCount} item di keranjang. Lanjut checkout?`);
+            } else {
+                showToast("Keranjang kosong!");
+            }
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+    </script>
+</body>
+</html>
